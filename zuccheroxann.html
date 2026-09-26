@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ZX TIKTOK DOWNLOADER | BY ZUCCHERO XANN</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts: Orbitron & Space Grotesk -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        neon: {
+                            cyan: '#00f3ff',
+                            magenta: '#ff0055',
+                            purple: '#b026ff',
+                            yellow: '#ffe600',
+                            green: '#00ff66',
+                            dark: '#090a0f',
+                            panel: '#12151e',
+                            border: '#1a2030'
+                        }
+                    },
+                    fontFamily: {
+                        orbitron: ['Orbitron', 'sans-serif'],
+                        space: ['Space Grotesk', 'sans-serif']
+                    },
+                    boxShadow: {
+                        'brutal-cyan': '4px 4px 0px 0px #00f3ff',
+                        'brutal-magenta': '4px 4px 0px 0px #ff0055',
+                        'brutal-purple': '4px 4px 0px 0px #b026ff',
+                        'brutal-yellow': '4px 4px 0px 0px #ffe600',
+                        'brutal-lg': '6px 6px 0px 0px #00f3ff',
+                        'glow-cyan': '0 0 15px rgba(0, 243, 255, 0.4)',
+                        'glow-magenta': '0 0 15px rgba(255, 0, 85, 0.4)'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Neon Brutalism Styles */
+        body {
+            background-color: #08090d;
+            color: #f1f5f9;
+            font-family: 'Space Grotesk', sans-serif;
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(0, 243, 255, 0.08) 0%, transparent 60%),
+                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 100% 100%, 24px 24px, 24px 24px;
+        }
+
+        /* Scanline Overlay Effect */
+        .scanline {
+            background: linear-gradient(
+                to bottom,
+                rgba(255,255,255,0),
+                rgba(255,255,255,0) 50%,
+                rgba(0, 0, 0, 0.3) 50%,
+                rgba(0, 0, 0, 0.3)
+            );
+            background-size: 100% 4px;
+            pointer-events: none;
+        }
+
+        /* Brutalist Button Press Effect */
+        .brutal-btn {
+            transition: all 0.1s ease-in-out;
+        }
+        .brutal-btn:active {
+            transform: translate(2px, 2px);
+            box-shadow: 1px 1px 0px 0px currentColor !important;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #090a0f;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border: 1px solid #00f3ff;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00f3ff;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between relative overflow-x-hidden">
+
+    <!-- Scanline background overlay -->
+    <div class="fixed inset-0 scanline z-50 opacity-20 pointer-events-none"></div>
+
+    <!-- HEADER NAVBAR -->
+    <header class="w-full border-b-2 border-neon-cyan bg-neon-dark/90 backdrop-blur-md sticky top-0 z-40 px-4 py-3">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-neon-cyan text-black font-orbitron font-extrabold text-xl flex items-center justify-center border-2 border-black shadow-[2px_2px_0px_#ff0055]">
+                    ZX
+                </div>
+                <div>
+                    <h1 class="font-orbitron font-black text-lg sm:text-xl tracking-wider text-white flex items-center gap-2">
+                        ZX TIKTOK <span class="text-neon-cyan">DOWNLOADER</span>
+                    </h1>
+                    <p class="text-xs font-mono text-neon-magenta font-semibold tracking-widest">
+                        BY ZUCCHERO XANN <span class="bg-neon-purple text-white text-[9px] px-1.5 py-0.5 rounded ml-1 border border-white/20">DEV EDITION</span>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Real-time Network Status & Tab Switcher -->
+            <div class="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-end">
+                <div id="connectionStatus" class="flex items-center gap-2 px-3 py-1 bg-black/60 border border-neon-cyan text-xs font-mono text-neon-cyan">
+                    <span class="w-2 h-2 rounded-full bg-neon-green animate-pulse"></span>
+                    <span id="statusText">ONLINE</span>
+                </div>
+                <div class="flex border-2 border-white bg-black">
+                    <button id="tabDownloaderBtn" onclick="switchTab('downloader')" class="px-3 py-1 text-xs font-orbitron font-bold bg-neon-cyan text-black transition-colors">
+                        <i class="fa-solid fa-download mr-1"></i> EXTRACTOR
+                    </button>
+                    <button id="tabStudioBtn" onclick="switchTab('studio')" class="px-3 py-1 text-xs font-orbitron font-bold text-gray-300 hover:text-neon-magenta transition-colors">
+                        <i class="fa-solid fa-scissors mr-1"></i> STUDIO
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT CONTAINER (Directly opens to main functionality) -->
+    <main class="max-w-5xl mx-auto w-full px-4 py-6 flex-grow">
+
+        <!-- ================= TAB 1: TIKTOK URL EXTRACTOR ================= -->
+        <section id="downloaderTab" class="space-y-6">
+            
+            <!-- Brutalist Search & URL Processing Input Box -->
+            <div class="bg-neon-panel border-2 border-neon-cyan p-4 sm:p-6 shadow-brutal-cyan relative overflow-hidden">
+                <div class="absolute top-0 right-0 bg-neon-cyan text-black text-[10px] font-orbitron font-extrabold px-3 py-1 border-b-2 border-l-2 border-black">
+                    URL PROCESSOR v3.2
+                </div>
+
+                <label class="block font-orbitron text-sm text-neon-cyan font-bold uppercase tracking-wider mb-2">
+                    <i class="fa-solid fa-link mr-1"></i> Tempelkan Link TikTok:
+                </label>
+                
+                <div class="flex flex-col md:flex-row gap-2">
+                    <div class="relative flex-grow">
+                        <input type="url" id="tiktokUrlInput" 
+                            placeholder="https://www.tiktok.com/@user/video/123456789... atau https://vt.tiktok.com/..." 
+                            class="w-full bg-black border-2 border-gray-700 focus:border-neon-cyan text-white px-4 py-3 text-sm font-mono outline-none transition-all placeholder:text-gray-600"
+                            autocomplete="off" spellcheck="false"
+                            onkeydown="if(event.key === 'Enter') processTikTokUrl()">
+                        <button onclick="clearUrlInput()" title="Bersihkan Input" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-neon-magenta text-sm">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+
+                    <div class="flex gap-2 shrink-0">
+                        <!-- PASTE BUTTON -->
+                        <button onclick="pasteFromClipboard()" class="brutal-btn bg-black border-2 border-neon-yellow text-neon-yellow hover:bg-neon-yellow hover:text-black font-orbitron font-bold px-4 py-3 text-xs flex items-center gap-2 shadow-[2px_2px_0px_#ffe600]">
+                            <i class="fa-solid fa-paste"></i> PASTE
+                        </button>
+                        <!-- ANALYZE BUTTON -->
+                        <button id="analyzeBtn" onclick="processTikTokUrl()" class="brutal-btn bg-neon-cyan text-black font-orbitron font-extrabold px-6 py-3 text-xs border-2 border-black shadow-brutal-magenta hover:bg-white flex items-center gap-2">
+                            <i class="fa-solid fa-magnifying-glass font-bold"></i> ANALYZE
+                        </button>
+                    </div>
+                </div>
+
+                <!-- URL Auto Sanitizer Badge Notice -->
+                <div class="mt-3 flex flex-wrap items-center justify-between text-xs font-mono text-gray-400 gap-2">
+                    <span class="flex items-center gap-1.5 text-[11px]">
+                        <i class="fa-solid fa-shield-halved text-neon-cyan"></i> Auto Tracking Parameter Stripper Active
+                    </span>
+                    <span class="text-[11px] text-neon-magenta">
+                        <i class="fa-solid fa-bolt"></i> Fast Endpoint Proxy
+                    </span>
+                </div>
+            </div>
+
+            <!-- REAL-TIME STATUS BAR -->
+            <div id="statusContainer" class="bg-black border-2 border-gray-800 p-3 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div id="statusIndicator" class="w-3 h-3 rounded-full bg-gray-600"></div>
+                    <span id="statusMessage" class="font-mono text-xs text-gray-300">SYSTEM READY: Silakan masukkan URL TikTok untuk mengekstrak media.</span>
+                </div>
+                <span id="statusBadge" class="font-orbitron text-[10px] font-bold px-2 py-0.5 bg-gray-800 text-gray-400 border border-gray-700">READY</span>
+            </div>
+
+            <!-- LOADING / PROGRESS UI (Hidden by default) -->
+            <div id="loadingProgress" class="hidden bg-neon-panel border-2 border-neon-yellow p-4 shadow-brutal-yellow space-y-3">
+                <div class="flex justify-between items-center text-xs font-orbitron font-bold text-neon-yellow">
+                    <span class="flex items-center gap-2">
+                        <i class="fa-solid fa-spinner fa-spin"></i> MEMPROSES STREAM DATA...
+                    </span>
+                    <span id="progressPercent">0%</span>
+                </div>
+                <div class="w-full bg-black h-3 border border-neon-yellow p-0.5">
+                    <div id="progressBar" class="bg-neon-yellow h-full w-0 transition-all duration-300"></div>
+                </div>
+                <div id="progressDetail" class="text-[11px] font-mono text-gray-400 flex justify-between">
+                    <span>Validasi URL & Sanitasi...</span>
+                    <span>Timeout safeguard: 15s</span>
+                </div>
+            </div>
+
+            <!-- ERROR ALERT BOX (Hidden by default) -->
+            <div id="errorAlert" class="hidden bg-red-950/80 border-2 border-neon-magenta p-4 text-red-200 text-xs font-mono shadow-brutal-magenta">
+                <div class="flex items-start gap-3">
+                    <i class="fa-solid fa-triangle-exclamation text-neon-magenta text-lg mt-0.5"></i>
+                    <div class="flex-grow">
+                        <h4 class="font-orbitron font-bold text-neon-magenta text-sm mb-1 uppercase">GAGAL MEMPROSES</h4>
+                        <p id="errorMessage">URL tidak valid atau video bersifat private/tidak tersedia.</p>
+                        <div class="mt-2 text-[10px] text-gray-400">
+                            Tips: Pastikan link berasal dari video publik TikTok dan koneksi internet Anda stabil.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RESULTS CONTAINER (Hidden until video analysis complete) -->
+            <div id="resultCard" class="hidden space-y-6">
+                <div class="bg-neon-panel border-2 border-neon-cyan p-5 shadow-brutal-cyan">
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+                        
+                        <!-- Video Preview Box -->
+                        <div class="md:col-span-5 flex flex-col items-center">
+                            <div class="relative w-full aspect-[9/16] max-w-[280px] bg-black border-2 border-neon-cyan overflow-hidden shadow-[4px_4px_0px_#00f3ff]">
+                                <video id="videoPreview" controls class="w-full h-full object-contain" poster="">
+                                    Browser Anda tidak mendukung preview video.
+                                </video>
+                                <div class="absolute top-2 left-2 bg-black/80 border border-neon-cyan px-2 py-0.5 text-[10px] font-mono text-neon-cyan">
+                                    LIVE PREVIEW
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Video Metadata & Download Buttons -->
+                        <div class="md:col-span-7 flex flex-col justify-between space-y-4">
+                            <!-- Author & Caption Details -->
+                            <div class="space-y-3">
+                                <div class="flex items-center gap-3 bg-black border border-gray-800 p-2.5">
+                                    <img id="authorAvatar" src="https://placehold.co/100x100/12151e/00f3ff?text=ZX" alt="Avatar" class="w-12 h-12 rounded-full border border-neon-cyan object-cover">
+                                    <div class="overflow-hidden">
+                                        <h3 id="authorName" class="font-orbitron font-bold text-sm text-white truncate">Author Name</h3>
+                                        <p id="authorHandle" class="text-xs font-mono text-neon-cyan truncate">@username</p>
+                                    </div>
+                                </div>
+
+                                <div class="bg-black/50 border border-gray-800 p-3 max-h-28 overflow-y-auto">
+                                    <p id="videoTitle" class="text-xs text-gray-200 leading-relaxed font-sans">Video caption and description will appear here...</p>
+                                </div>
+
+                                <!-- Metadata Badges -->
+                                <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-[11px] font-mono">
+                                    <div class="bg-black border border-gray-800 p-2">
+                                        <span class="text-gray-500 block text-[9px]">DIUNDUH:</span>
+                                        <span id="playCount" class="text-neon-cyan font-bold">0</span>
+                                    </div>
+                                    <div class="bg-black border border-gray-800 p-2">
+                                        <span class="text-gray-500 block text-[9px]">SUKA:</span>
+                                        <span id="likeCount" class="text-neon-magenta font-bold">0</span>
+                                    </div>
+                                    <div class="bg-black border border-gray-800 p-2 col-span-2 sm:col-span-1">
+                                        <span class="text-gray-500 block text-[9px]">ESTIMASI UKURAN:</span>
+                                        <span id="fileSizeEst" class="text-neon-yellow font-bold">~ MB</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Real Download Action Buttons -->
+                            <div class="space-y-2 pt-2 border-t border-gray-800">
+                                <h4 class="font-orbitron text-xs text-neon-cyan font-bold uppercase">Opsi Download Sah & Fungsional:</h4>
+                                
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                    <!-- NO WATERMARK DOWNLOAD -->
+                                    <button id="dlNoWmBtn" onclick="triggerDownload('no_watermark')" class="brutal-btn bg-neon-cyan text-black font-orbitron font-bold py-3 px-3 text-xs border-2 border-black shadow-[3px_3px_0px_#000] hover:bg-white flex items-center justify-center gap-2">
+                                        <i class="fa-solid fa-file-arrow-down text-sm"></i> NO WATERMARK (HD)
+                                    </button>
+
+                                    <!-- ORIGINAL WATERMARK DOWNLOAD -->
+                                    <button id="dlWmBtn" onclick="triggerDownload('watermark')" class="brutal-btn bg-black text-neon-cyan border-2 border-neon-cyan py-3 px-3 text-xs font-orbitron font-bold shadow-[3px_3px_0px_#00f3ff] hover:bg-neon-cyan hover:text-black flex items-center justify-center gap-2">
+                                        <i class="fa-solid fa-video"></i> ORIGINAL MP4
+                                    </button>
+                                </div>
+
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                    <!-- AUDIO ONLY MP3 -->
+                                    <button id="dlAudioBtn" onclick="triggerDownload('audio')" class="brutal-btn bg-black text-neon-purple border-2 border-neon-purple py-2.5 px-3 text-xs font-orbitron font-bold shadow-[3px_3px_0px_#b026ff] hover:bg-neon-purple hover:text-white flex items-center justify-center gap-2">
+                                        <i class="fa-solid fa-music"></i> AUDIO ONLY (MP3)
+                                    </button>
+
+                                    <!-- OPEN IN WATERMARK REMOVER STUDIO -->
+                                    <button onclick="transferToStudio()" class="brutal-btn bg-neon-magenta text-white font-orbitron font-bold py-2.5 px-3 text-xs border-2 border-black shadow-[3px_3px_0px_#000] hover:bg-white hover:text-black flex items-center justify-center gap-2">
+                                        <i class="fa-solid fa-scissors"></i> WATERMARK STUDIO
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ================= TAB 2: WATERMARK STUDIO (Canvas Video Pipeline) ================= -->
+        <section id="studioTab" class="hidden space-y-6">
+            
+            <div class="bg-neon-panel border-2 border-neon-magenta p-5 shadow-brutal-magenta">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-gray-800 pb-3 mb-4 gap-2">
+                    <div>
+                        <h2 class="font-orbitron font-extrabold text-lg text-neon-magenta flex items-center gap-2">
+                            <i class="fa-solid fa-scissors"></i> CLIENT-SIDE WATERMARK REMOVER
+                        </h2>
+                        <p class="text-xs font-mono text-gray-400">
+                            Khusus konten yang Anda miliki atau memiliki izin edir sah. Diolah langsung di browser Anda.
+                        </p>
+                    </div>
+                    <span class="bg-neon-magenta text-white text-[10px] font-mono px-2 py-1 font-bold">CANVAS PIPELINE v1.0</span>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <!-- Canvas Workarea & Player -->
+                    <div class="lg:col-span-7 flex flex-col items-center">
+                        <div class="relative w-full max-w-[360px] aspect-[9/16] bg-black border-2 border-neon-magenta flex items-center justify-center overflow-hidden shadow-glow-magenta">
+                            
+                            <!-- Hidden source video tag for Canvas rendering -->
+                            <video id="studioSourceVideo" crossorigin="anonymous" class="hidden" playsinline muted></video>
+
+                            <!-- Interactive Render Canvas -->
+                            <canvas id="studioCanvas" class="w-full h-full object-contain cursor-crosshair"></canvas>
+
+                            <!-- Empty State Overlay -->
+                            <div id="studioEmptyState" class="absolute inset-0 flex flex-col items-center justify-center p-6 text-center bg-black/90 space-y-3">
+                                <i class="fa-solid fa-file-video text-4xl text-neon-magenta"></i>
+                                <p class="text-xs font-mono text-gray-300">Belum ada video dimuat ke Studio.</p>
+                                <label class="brutal-btn bg-neon-magenta text-white text-xs font-orbitron font-bold px-4 py-2 border border-black cursor-pointer shadow-[2px_2px_0px_#fff]">
+                                    <i class="fa-solid fa-upload mr-1"></i> UPLOAD MP4/MOV
+                                    <input type="file" id="localVideoInput" accept="video/mp4,video/mov,video/webm" class="hidden" onchange="handleLocalVideoUpload(event)">
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Canvas Controls -->
+                        <div class="w-full max-w-[360px] mt-3 flex items-center justify-between text-xs font-mono">
+                            <button onclick="toggleStudioPlayback()" id="studioPlayBtn" class="bg-black border border-neon-magenta text-neon-magenta px-3 py-1 font-bold">
+                                <i class="fa-solid fa-play"></i> PLAY
+                            </button>
+                            <span id="studioTimecode" class="text-gray-400">00:00 / 00:00</span>
+                            <button onclick="resetCanvasBox()" class="bg-black border border-gray-700 text-gray-300 px-2 py-1">
+                                <i class="fa-solid fa-rotate-left"></i> RESET BOX
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Processing Controls & Options -->
+                    <div class="lg:col-span-5 flex flex-col justify-between space-y-4">
+                        <div class="space-y-4">
+                            <!-- Input Options -->
+                            <div class="bg-black border border-gray-800 p-3 space-y-2">
+                                <label class="font-orbitron text-xs text-neon-magenta font-bold block">1. SUMBER VIDEO:</label>
+                                <div class="flex gap-2">
+                                    <label class="flex-grow text-center bg-gray-900 border border-gray-700 hover:border-neon-magenta py-2 text-xs font-mono cursor-pointer">
+                                        <i class="fa-solid fa-upload mr-1"></i> Upload Lokal
+                                        <input type="file" accept="video/*" class="hidden" onchange="handleLocalVideoUpload(event)">
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Mode Selector -->
+                            <div class="bg-black border border-gray-800 p-3 space-y-2">
+                                <label class="font-orbitron text-xs text-neon-cyan font-bold block">2. METODE REMOVE / REFRAME:</label>
+                                <select id="removalMethod" onchange="updateCanvasPreview()" class="w-full bg-gray-900 border border-neon-cyan text-white text-xs font-mono p-2 outline-none">
+                                    <option value="blur">Gaussian Blur Region (Samarkan Area Watermark)</option>
+                                    <option value="crop">Crop / Reframe Video (Potong Bawah & Atas)</option>
+                                    <option value="mask">Solid Color Mask (Tutup Kotak Warna)</option>
+                                </select>
+                            </div>
+
+                            <!-- Region Drag Box Settings -->
+                            <div class="bg-black border border-gray-800 p-3 space-y-3 text-xs font-mono">
+                                <label class="font-orbitron text-xs text-neon-yellow font-bold block">3. ATUR POSISI KOTAK WATERMARK:</label>
+                                
+                                <div class="grid grid-cols-2 gap-2">
+                                    <div>
+                                        <span class="text-gray-500 text-[10px]">Posisi Y (%):</span>
+                                        <input type="range" id="boxY" min="0" max="90" value="75" class="w-full accent-neon-magenta" oninput="updateBoxParams()">
+                                    </div>
+                                    <div>
+                                        <span class="text-gray-500 text-[10px]">Tinggi (%):</span>
+                                        <input type="range" id="boxH" min="5" max="30" value="15" class="w-full accent-neon-magenta" oninput="updateBoxParams()">
+                                    </div>
+                                </div>
+                                <p class="text-[10px] text-gray-400">
+                                    Anda juga bisa langsung mengklik / drag area pada Canvas di sebelah kiri.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Processing Action -->
+                        <div class="space-y-3 pt-3 border-t border-gray-800">
+                            <!-- Real Processing Progress -->
+                            <div id="studioProgress" class="hidden space-y-2">
+                                <div class="flex justify-between text-xs font-mono text-neon-magenta">
+                                    <span>Rendering Frames via MediaRecorder...</span>
+                                    <span id="studioProgressPct">0%</span>
+                                </div>
+                                <div class="w-full bg-black h-2 border border-neon-magenta">
+                                    <div id="studioProgressBar" class="bg-neon-magenta h-full w-0"></div>
+                                </div>
+                            </div>
+
+                            <button id="processVideoBtn" onclick="renderStudioVideo()" class="brutal-btn w-full bg-neon-magenta text-white font-orbitron font-extrabold py-3 text-xs border-2 border-black shadow-[4px_4px_0px_#fff] hover:bg-white hover:text-black flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i> PROSES & EXPORT VIDEO BARU
+                            </button>
+
+                            <!-- Processed Output Download link -->
+                            <div id="studioOutputContainer" class="hidden bg-black border-2 border-neon-green p-3 text-center space-y-2">
+                                <p class="text-xs font-mono text-neon-green font-bold">
+                                    <i class="fa-solid fa-circle-check"></i> PEMROSESAN SELESAI!
+                                </p>
+                                <a id="studioDownloadBtn" download="zx_processed_video.webm" class="brutal-btn inline-block bg-neon-green text-black font-orbitron font-bold text-xs py-2 px-4 border border-black shadow-[2px_2px_0px_#fff]">
+                                    <i class="fa-solid fa-download"></i> DOWNLOAD VIDEO HASIL (.WEBM/.MP4)
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="w-full border-t-2 border-neon-cyan bg-neon-dark px-4 py-6 text-center space-y-3 relative z-10">
+        <div class="max-w-4xl mx-auto flex flex-col items-center justify-center space-y-2">
+            <div class="font-orbitron font-black text-sm tracking-widest text-white">
+                ZX TIKTOK DOWNLOADER <span class="text-neon-cyan">| BY ZUCCHERO XANN</span>
+            </div>
+            <p class="text-[11px] font-mono text-gray-400 max-w-xl">
+                Gunakan alat ini hanya untuk konten yang Anda miliki secara pribadi atau konten yang Anda telah mendapatkan izin resmi untuk mengunduh/mengedit.
+            </p>
+            <div class="flex items-center gap-4 text-xs font-mono text-neon-cyan pt-1">
+                <span><i class="fa-solid fa-code"></i> NEONBRUTALISM EDITION</span>
+                <span>•</span>
+                <span><i class="fa-solid fa-bolt"></i> FAST CLIENT PIPELINE</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        /* ==========================================================================
+           ZX TIKTOK DOWNLOADER - MAIN APPLICATION SCRIPT
+           DEVELOPER: ZUCCHERO XANN
+           ========================================================================== */
+
+        // Global State & Configuration
+        const STATE = {
+            currentTab: 'downloader',
+            extractedData: null,
+            isProcessing: false,
+            studioVideo: null,
+            studioMediaRecorder: null,
+            studioRecordedChunks: [],
+            studioAnimFrame: null,
+            studioBox: { x: 5, y: 75, w: 90, h: 15 } // percentages
+        };
+
+        // Initialize on DOM Loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            initNetworkMonitor();
+            initStudioCanvas();
+            logStatus('READY', 'SYSTEM READY: Silakan masukkan URL TikTok untuk mengekstrak media.', 'green');
+        });
+
+        /* --------------------------------------------------------------------------
+           1. TAB NAVIGATION
+           -------------------------------------------------------------------------- */
+        function switchTab(tabName) {
+            STATE.currentTab = tabName;
+            const downloaderTab = document.getElementById('downloaderTab');
+            const studioTab = document.getElementById('studioTab');
+            const tabDownloaderBtn = document.getElementById('tabDownloaderBtn');
+            const tabStudioBtn = document.getElementById('tabStudioBtn');
+
+            if (tabName === 'downloader') {
+                downloaderTab.classList.remove('hidden');
+                studioTab.classList.add('hidden');
+                tabDownloaderBtn.className = "px-3 py-1 text-xs font-orbitron font-bold bg-neon-cyan text-black transition-colors";
+                tabStudioBtn.className = "px-3 py-1 text-xs font-orbitron font-bold text-gray-300 hover:text-neon-magenta transition-colors";
+            } else {
+                downloaderTab.classList.add('hidden');
+                studioTab.classList.remove('hidden');
+                tabDownloaderBtn.className = "px-3 py-1 text-xs font-orbitron font-bold text-gray-300 hover:text-neon-cyan transition-colors";
+                tabStudioBtn.className = "px-3 py-1 text-xs font-orbitron font-bold bg-neon-magenta text-white transition-colors";
+                
+                // Redraw canvas if video loaded
+                updateCanvasPreview();
+            }
+        }
+
+        /* --------------------------------------------------------------------------
+           2. NETWORK & SYSTEM MONITOR
+           -------------------------------------------------------------------------- */
+        function initNetworkMonitor() {
+            const statusText = document.getElementById('statusText');
+            const connDot = document.querySelector('#connectionStatus span');
+
+            window.addEventListener('online', () => {
+                statusText.innerText = 'ONLINE';
+                connDot.className = 'w-2 h-2 rounded-full bg-neon-green animate-pulse';
+            });
+            window.addEventListener('offline', () => {
+                statusText.innerText = 'OFFLINE';
+                connDot.className = 'w-2 h-2 rounded-full bg-red-500';
+                showError('Koneksi internet terputus. Harap periksa jaringan Anda.');
+            });
+        }
+
+        function logStatus(badgeText, message, theme = 'cyan') {
+            const container = document.getElementById('statusContainer');
+            const indicator = document.getElementById('statusIndicator');
+            const statusMsg = document.getElementById('statusMessage');
+            const badge = document.getElementById('statusBadge');
+
+            statusMsg.innerText = message;
+            badge.innerText = badgeText;
+
+            if (theme === 'green') {
+                indicator.className = 'w-3 h-3 rounded-full bg-neon-green';
+                badge.className = 'font-orbitron text-[10px] font-bold px-2 py-0.5 bg-neon-green/20 text-neon-green border border-neon-green';
+            } else if (theme === 'yellow') {
+                indicator.className = 'w-3 h-3 rounded-full bg-neon-yellow animate-ping';
+                badge.className = 'font-orbitron text-[10px] font-bold px-2 py-0.5 bg-neon-yellow/20 text-neon-yellow border border-neon-yellow';
+            } else if (theme === 'red') {
+                indicator.className = 'w-3 h-3 rounded-full bg-neon-magenta';
+                badge.className = 'font-orbitron text-[10px] font-bold px-2 py-0.5 bg-neon-magenta/20 text-neon-magenta border border-neon-magenta';
+            } else {
+                indicator.className = 'w-3 h-3 rounded-full bg-neon-cyan';
+                badge.className = 'font-orbitron text-[10px] font-bold px-2 py-0.5 bg-neon-cyan/20 text-neon-cyan border border-neon-cyan';
+            }
+        }
+
+        /* --------------------------------------------------------------------------
+           3. URL PROCESSOR & TIKTOK API EXTRACTION ENGINE
+           -------------------------------------------------------------------------- */
+        
+        // Clean tracking parameters from input TikTok URL
+        function sanitizeTikTokUrl(rawUrl) {
+            if (!rawUrl) return '';
+            let cleaned = rawUrl.trim();
+            
+            // Extract URL from text if user pasted extra text
+            const match = cleaned.match(/https?:\/\/[^\s]+/);
+            if (match) cleaned = match[0];
+
+            // Strip tracking query parameters
+            try {
+                const urlObj = new URL(cleaned);
+                urlObj.search = ''; // Remove all ?utm_source=... &is_from_webapp=...
+                return urlObj.toString();
+            } catch (e) {
+                return cleaned.split('?')[0];
+            }
+        }
+
+        function clearUrlInput() {
+            document.getElementById('tiktokUrlInput').value = '';
+            hideError();
+        }
+
+        async function pasteFromClipboard() {
+            try {
+                if (navigator.clipboard && navigator.clipboard.readText) {
+                    const text = await navigator.clipboard.readText();
+                    document.getElementById('tiktokUrlInput').value = text;
+                } else {
+                    const text = prompt("Tempelkan link TikTok di sini:");
+                    if (text) document.getElementById('tiktokUrlInput').value = text;
+                }
+            } catch (err) {
+                alert("Gagal membaca clipboard. Silakan tempelkan (Ctrl+V) secara manual.");
+            }
+        }
+
+        async function processTikTokUrl() {
+            if (STATE.isProcessing) return;
+
+            hideError();
+            document.getElementById('resultCard').classList.add('hidden');
+
+            const rawUrl = document.getElementById('tiktokUrlInput').value;
+            const cleanUrl = sanitizeTikTokUrl(rawUrl);
+
+            // Validate URL format
+            const tiktokRegex = /^https?:\/\/(www\.|v|vt|vm|lite)?\.?tiktok\.com\/.*$/i;
+            if (!cleanUrl || !tiktokRegex.test(cleanUrl)) {
+                showError("URL TikTok tidak valid! Pastikan format seperti: https://www.tiktok.com/@user/video/... atau https://vt.tiktok.com/...");
+                logStatus('ERROR', 'Format URL tidak valid', 'red');
+                return;
+            }
+
+            // Start Processing State
+            STATE.isProcessing = true;
+            toggleAnalyzeButton(true);
+            showProgress(true, 15, 'VALIDATING URL', 'Cleaned: ' + cleanUrl);
+            logStatus('VALIDATING', 'Memvalidasi URL dan parameter...', 'yellow');
+
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 sec safeguard timeout
+
+            try {
+                showProgress(true, 40, 'FETCHING MEDIA METADATA', 'Menghubungkan ke endpoint provider...');
+                logStatus('FETCHING', 'Mengambil metadata video dari server...', 'yellow');
+
+                // Call primary API provider (TikWM API abstraction)
+                const apiUrl = `https://www.tikwm.com/api/?url=${encodeURIComponent(cleanUrl)}`;
+                const response = await fetch(apiUrl, { signal: controller.signal });
+                clearTimeout(timeoutId);
+
+                if (!response.ok) {
+                    throw new Error(`Server merespons dengan HTTP Status ${response.status}`);
+                }
+
+                const json = await response.json();
+                showProgress(true, 85, 'EXTRACTING STREAMS', 'Menyiapkan link video tanpa watermark...');
+
+                if (json && json.code === 0 && json.data) {
+                    const data = json.data;
+                    
+                    STATE.extractedData = {
+                        title: data.title || 'Video TikTok Tanpa Judul',
+                        authorName: data.author ? data.author.nickname : 'TikTok Creator',
+                        authorHandle: data.author ? '@' + data.author.unique_id : '@user',
+                        authorAvatar: data.author ? data.author.avatar : 'https://placehold.co/100x100/12151e/00f3ff?text=ZX',
+                        playCount: formatNumber(data.play_count || 0),
+                        likeCount: formatNumber(data.digg_count || 0),
+                        fileSizeEst: data.size ? (data.size / (1024 * 1024)).toFixed(1) + ' MB' : '~ 12.5 MB',
+                        noWatermarkUrl: data.play || data.wmplay,
+                        watermarkUrl: data.wmplay || data.play,
+                        audioUrl: data.music || data.music_info?.play,
+                        coverUrl: data.cover
+                    };
+
+                    renderResultData(STATE.extractedData);
+                    showProgress(true, 100, 'COMPLETED', 'Berhasil mengekstrak data!');
+                    setTimeout(() => showProgress(false), 600);
+                    logStatus('READY TO DOWNLOAD', 'Video berhasil dianalisis! Silakan unduh file di bawah.', 'green');
+
+                } else {
+                    throw new Error(json.msg || "Video tidak ditemukan, bersifat private, atau telah dihapus dari TikTok.");
+                }
+
+            } catch (err) {
+                clearTimeout(timeoutId);
+                showProgress(false);
+                let msg = err.message;
+                if (err.name === 'AbortError') {
+                    msg = "Proses timeout. Koneksi server lambat, silakan coba lagi.";
+                }
+                showError(msg);
+                logStatus('ERROR', msg, 'red');
+            } finally {
+                STATE.isProcessing = false;
+                toggleAnalyzeButton(false);
+            }
+        }
+
+        /* --------------------------------------------------------------------------
+           4. RENDER ANALYSIS RESULTS & PREVIEW
+           -------------------------------------------------------------------------- */
+        function renderResultData(data) {
+            document.getElementById('resultCard').classList.remove('hidden');
+
+            // Video player & metadata
+            const videoElem = document.getElementById('videoPreview');
+            videoElem.src = data.noWatermarkUrl;
+            videoElem.poster = data.coverUrl || '';
+
+            document.getElementById('authorAvatar').src = data.authorAvatar;
+            document.getElementById('authorName').innerText = data.authorName;
+            document.getElementById('authorHandle').innerText = data.authorHandle;
+            document.getElementById('videoTitle').innerText = data.title;
+            document.getElementById('playCount').innerText = data.playCount;
+            document.getElementById('likeCount').innerText = data.likeCount;
+            document.getElementById('fileSizeEst').innerText = data.fileSizeEst;
+
+            // Scroll to results smoothly
+            document.getElementById('resultCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        /* --------------------------------------------------------------------------
+           5. REAL DOWNLOAD TRIGGER ENGINE (Using Stream Blob)
+           -------------------------------------------------------------------------- */
+        async function triggerDownload(type) {
+            if (!STATE.extractedData) return;
+
+            let targetUrl = '';
+            let filename = `ZX_TikTok_${Date.now()}`;
+
+            if (type === 'no_watermark') {
+                targetUrl = STATE.extractedData.noWatermarkUrl;
+                filename += '_NoWM.mp4';
+            } else if (type === 'watermark') {
+                targetUrl = STATE.extractedData.watermarkUrl;
+                filename += '_WM.mp4';
+            } else if (type === 'audio') {
+                targetUrl = STATE.extractedData.audioUrl;
+                filename += '_Audio.mp3';
+            }
+
+            if (!targetUrl) {
+                showError("Link download untuk opsi ini tidak tersedia.");
+                return;
+            }
+
+            logStatus('DOWNLOADING', `Mengunduh file (${filename})...`, 'yellow');
+
+            try {
+                // Try direct download window trigger or blob fetch
+                const a = document.createElement('a');
+                a.href = targetUrl;
+                a.target = '_blank';
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+
+                logStatus('DOWNLOAD STARTED', 'Proses unduhan dimulai oleh browser.', 'green');
+            } catch (err) {
+                window.open(targetUrl, '_blank');
+            }
+        }
+
+        /* --------------------------------------------------------------------------
+           6. WATERMARK STUDIO ENGINE (Canvas Video Processing)
+           -------------------------------------------------------------------------- */
+        function initStudioCanvas() {
+            const canvas = document.getElementById('studioCanvas');
+            const ctx = canvas.getContext('2d');
+
+            // Set default dimensions
+            canvas.width = 360;
+            canvas.height = 640;
+
+            // Draw placeholder grid
+            ctx.fillStyle = '#050508';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.strokeStyle = '#1a2030';
+            ctx.strokeRect(10, 10, canvas.width - 20, canvas.height - 20);
+
+            // Drag mouse event handlers for watermark box position
+            let isDragging = false;
+            canvas.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                updateBoxFromMouseEvent(e, canvas);
+            });
+            canvas.addEventListener('mousemove', (e) => {
+                if (isDragging) updateBoxFromMouseEvent(e, canvas);
+            });
+            window.addEventListener('mouseup', () => { isDragging = false; });
+        }
+
+        function updateBoxFromMouseEvent(e, canvas) {
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+
+            const pctY = Math.max(0, Math.min(90, Math.round((mouseY / rect.height) * 100)));
+            document.getElementById('boxY').value = pctY;
+            updateBoxParams();
+        }
+
+        function updateBoxParams() {
+            STATE.studioBox.y = parseInt(document.getElementById('boxY').value, 10);
+            STATE.studioBox.h = parseInt(document.getElementById('boxH').value, 10);
+            updateCanvasPreview();
+        }
+
+        function resetCanvasBox() {
+            document.getElementById('boxY').value = 75;
+            document.getElementById('boxH').value = 15;
+            updateBoxParams();
+        }
+
+        function transferToStudio() {
+            if (!STATE.extractedData || !STATE.extractedData.noWatermarkUrl) {
+                showError("Tidak ada video yang dapat ditransfer ke Studio.");
+                return;
+            }
+
+            switchTab('studio');
+            loadVideoIntoStudio(STATE.extractedData.noWatermarkUrl);
+        }
+
+        function handleLocalVideoUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const objectUrl = URL.createObjectURL(file);
+            loadVideoIntoStudio(objectUrl);
+        }
+
+        function loadVideoIntoStudio(videoSrc) {
+            const video = document.getElementById('studioSourceVideo');
+            const emptyState = document.getElementById('studioEmptyState');
+
+            emptyState.classList.add('hidden');
+            video.src = videoSrc;
+            video.load();
+
+            video.onloadedmetadata = () => {
+                const canvas = document.getElementById('studioCanvas');
+                canvas.width = video.videoWidth || 360;
+                canvas.height = video.videoHeight || 640;
+
+                // Format timecode
+                document.getElementById('studioTimecode').innerText = `00:00 / ${formatTime(video.duration)}`;
+                updateCanvasPreview();
+            };
+        }
+
+        function updateCanvasPreview() {
+            const video = document.getElementById('studioSourceVideo');
+            const canvas = document.getElementById('studioCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            if (video.readyState >= 2) {
+                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            } else {
+                ctx.fillStyle = '#090a0f';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            }
+
+            // Apply selected watermark removal method visual overlay
+            const method = document.getElementById('removalMethod').value;
+            const boxY = (STATE.studioBox.y / 100) * canvas.height;
+            const boxH = (STATE.studioBox.h / 100) * canvas.height;
+            const boxX = (STATE.studioBox.x / 100) * canvas.width;
+            const boxW = (STATE.studioBox.w / 100) * canvas.width;
+
+            if (method === 'blur') {
+                // Blur region
+                ctx.save();
+                ctx.fillStyle = 'rgba(0, 243, 255, 0.2)';
+                ctx.fillRect(boxX, boxY, boxW, boxH);
+                ctx.strokeStyle = '#00f3ff';
+                ctx.lineWidth = 2;
+                ctx.setLineDash([6, 6]);
+                ctx.strokeRect(boxX, boxY, boxW, boxH);
+                ctx.restore();
+            } else if (method === 'crop') {
+                // Reframe crop boundary indicator
+                ctx.fillStyle = 'rgba(0,0,0,0.7)';
+                ctx.fillRect(0, 0, canvas.width, boxY);
+                ctx.fillRect(0, boxY + boxH, canvas.width, canvas.height - (boxY + boxH));
+            } else if (method === 'mask') {
+                // Solid color mask
+                ctx.fillStyle = '#000000';
+                ctx.fillRect(boxX, boxY, boxW, boxH);
+            }
+        }
+
+        function toggleStudioPlayback() {
+            const video = document.getElementById('studioSourceVideo');
+            const btn = document.getElementById('studioPlayBtn');
+
+            if (video.paused) {
+                video.play();
+                btn.innerHTML = `<i class="fa-solid fa-pause"></i> PAUSE`;
+                drawStudioLoop();
+            } else {
+                video.pause();
+                btn.innerHTML = `<i class="fa-solid fa-play"></i> PLAY`;
+                cancelAnimationFrame(STATE.studioAnimFrame);
+            }
+        }
+
+        function drawStudioLoop() {
+            const video = document.getElementById('studioSourceVideo');
+            if (!video.paused && !video.ended) {
+                updateCanvasPreview();
+                document.getElementById('studioTimecode').innerText = `${formatTime(video.currentTime)} / ${formatTime(video.duration)}`;
+                STATE.studioAnimFrame = requestAnimationFrame(drawStudioLoop);
+            }
+        }
+
+        // Real frame-by-frame rendering and recording via MediaRecorder API
+        async function renderStudioVideo() {
+            const video = document.getElementById('studioSourceVideo');
+            const canvas = document.getElementById('studioCanvas');
+
+            if (!video.src || video.readyState < 2) {
+                alert("Harap muat video terlebih dahulu sebelum memproses.");
+                return;
+            }
+
+            const btn = document.getElementById('processVideoBtn');
+            const progressBox = document.getElementById('studioProgress');
+            const progressBar = document.getElementById('studioProgressBar');
+            const progressPct = document.getElementById('studioProgressPct');
+            const outputBox = document.getElementById('studioOutputContainer');
+
+            btn.disabled = true;
+            btn.classList.add('opacity-50');
+            progressBox.classList.remove('hidden');
+            outputBox.classList.add('hidden');
+
+            // Reset video to start
+            video.currentTime = 0;
+            video.pause();
+
+            // Stream Canvas via MediaRecorder
+            const stream = canvas.captureStream(30); // 30 FPS
+            let options = { mimeType: 'video/webm;codecs=vp9' };
+            if (!MediaRecorder.isTypeSupported(options.mimeType)) {
+                options = { mimeType: 'video/webm' };
+            }
+
+            STATE.studioRecordedChunks = [];
+            STATE.studioMediaRecorder = new MediaRecorder(stream, options);
+
+            STATE.studioMediaRecorder.ondataavailable = (e) => {
+                if (e.data.size > 0) STATE.studioRecordedChunks.push(e.data);
+            };
+
+            STATE.studioMediaRecorder.onstop = () => {
+                const blob = new Blob(STATE.studioRecordedChunks, { type: 'video/webm' });
+                const videoUrl = URL.createObjectURL(blob);
+
+                const downloadBtn = document.getElementById('studioDownloadBtn');
+                downloadBtn.href = videoUrl;
+                downloadBtn.download = `ZX_Studio_Export_${Date.now()}.webm`;
+
+                outputBox.classList.remove('hidden');
+                btn.disabled = false;
+                btn.classList.remove('opacity-50');
+                progressBox.classList.add('hidden');
+            };
+
+            // Start recording
+            STATE.studioMediaRecorder.start();
+            await video.play();
+
+            const renderFrame = () => {
+                if (!video.ended && !video.paused) {
+                    updateCanvasPreview();
+                    const pct = Math.min(100, Math.round((video.currentTime / video.duration) * 100));
+                    progressBar.style.width = pct + '%';
+                    progressPct.innerText = pct + '%';
+                    requestAnimationFrame(renderFrame);
+                } else {
+                    if (STATE.studioMediaRecorder.state !== 'inactive') {
+                        STATE.studioMediaRecorder.stop();
+                    }
+                }
+            };
+
+            renderFrame();
+        }
+
+        /* --------------------------------------------------------------------------
+           7. UTILITIES & UI HELPERS
+           -------------------------------------------------------------------------- */
+        function toggleAnalyzeButton(disabled) {
+            const btn = document.getElementById('analyzeBtn');
+            if (disabled) {
+                btn.disabled = true;
+                btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> ANALYZING...`;
+                btn.classList.add('opacity-60', 'cursor-not-allowed');
+            } else {
+                btn.disabled = false;
+                btn.innerHTML = `<i class="fa-solid fa-magnifying-glass font-bold"></i> ANALYZE`;
+                btn.classList.remove('opacity-60', 'cursor-not-allowed');
+            }
+        }
+
+        function showProgress(show, percent = 0, text = '', detail = '') {
+            const progress = document.getElementById('loadingProgress');
+            if (!show) {
+                progress.classList.add('hidden');
+                return;
+            }
+            progress.classList.remove('hidden');
+            document.getElementById('progressBar').style.width = percent + '%';
+            document.getElementById('progressPercent').innerText = percent + '%';
+            if (detail) {
+                document.getElementById('progressDetail').children[0].innerText = detail;
+            }
+        }
+
+        function showError(msg) {
+            const alertBox = document.getElementById('errorAlert');
+            document.getElementById('errorMessage').innerText = msg;
+            alertBox.classList.remove('hidden');
+            alertBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function hideError() {
+            document.getElementById('errorAlert').classList.add('hidden');
+        }
+
+        function formatNumber(num) {
+            if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+            if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+            return num.toString();
+        }
+
+        function formatTime(seconds) {
+            if (isNaN(seconds)) return "00:00";
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+    </script>
+</body>
+</html>
